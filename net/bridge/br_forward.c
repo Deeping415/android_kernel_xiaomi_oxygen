@@ -20,6 +20,7 @@
 #include <linux/if_vlan.h>
 #include <linux/netfilter_bridge.h>
 #include "br_private.h"
+#include <linux/netdevice.h>
 
 /* Don't forward packets to originating port or forwarding disabled */
 static inline int should_deliver(const struct net_bridge_port *p,
@@ -122,7 +123,7 @@ static int deliver_clone(const struct net_bridge_port *prev,
 
 	skb = skb_clone(skb, GFP_ATOMIC);
 	if (!skb) {
-		DEV_STATS_INC(dev, tx_dropped);
+		dev->stats.tx_dropped++;
 		return -ENOMEM;
 	}
 
@@ -264,7 +265,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
 	nskb = pskb_copy(skb, GFP_ATOMIC);
 	__skb_pull(skb, ETH_HLEN);
 	if (!nskb) {
-		DEV_STATS_INC(dev, tx_dropped);
+		dev->stats.tx_dropped++;
 		return;
 	}
 
