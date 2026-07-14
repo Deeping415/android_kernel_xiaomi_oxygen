@@ -13,6 +13,10 @@
 #include <net/tcp.h>
 #include <net/strparser.h>
 
+#ifndef static_assert
+#define static_assert(expr, msg) _Static_assert(expr, msg)
+#endif
+
 #define MAX_MSG_FRAGS			MAX_SKB_FRAGS
 #define NR_MSG_FRAG_IDS			(MAX_MSG_FRAGS + 1)
 
@@ -38,7 +42,7 @@ struct sk_msg_sg {
 	 */
 	struct scatterlist		data[MAX_MSG_FRAGS + 2];
 };
-static_assert(BITS_PER_LONG >= NR_MSG_FRAG_IDS);
+static_assert(BITS_PER_LONG >= NR_MSG_FRAG_IDS, "BITS_PER_LONG < NR_MSG_FRAG_IDS");
 
 /* UAPI in filter.c depends on struct sk_msg_sg being first element. */
 struct sk_msg {

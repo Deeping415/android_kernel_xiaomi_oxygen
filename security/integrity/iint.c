@@ -206,6 +206,7 @@ static int __init integrity_iintcache_init(void)
 }
 DEFINE_LSM(integrity) = {
 	.name = "integrity",
+	.flags = LSM_FLAG_LEGACY_MAJOR,
 	.init = integrity_iintcache_init,
 };
 

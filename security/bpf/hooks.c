@@ -29,6 +29,7 @@ struct lsm_blob_sizes bpf_lsm_blob_sizes __lsm_ro_after_init = {
 
 DEFINE_LSM(bpf) = {
 	.name = "bpf",
+	.flags = LSM_FLAG_LEGACY_MAJOR,
 	.init = bpf_lsm_init,
 	.blobs = &bpf_lsm_blob_sizes
 };
