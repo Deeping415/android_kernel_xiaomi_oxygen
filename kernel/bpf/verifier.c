@@ -12746,8 +12746,10 @@ skip_full_check:
 	env->verification_time = ktime_get_ns() - start_time;
 	print_verification_stats(env);
 
-	if (log->level && bpf_verifier_log_full(log))
-		ret = -ENOSPC;
+	if (log->level && bpf_verifier_log_full(log)) {
+		log->len_used = 0;
+		log->len_total = 0;
+	}
 	if (log->level && !log->ubuf) {
 		ret = -EFAULT;
 		goto err_release_maps;
